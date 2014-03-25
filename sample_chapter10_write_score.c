@@ -10,7 +10,7 @@ void save(){
 	FILE *fp;
 	int i;
 	if((fp=fopen("stu.dat","wb"))==NULL){
-		printf("cannnot open file\n");
+		printf("cannot open file\n");
 		return;
 	}
 	for(i=0;i<SIZE;i++)
