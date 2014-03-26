@@ -37,7 +37,7 @@ void save(){
 int main(){
 	int i;
 	for(i=0;i<SIZE;i++){
-		printf("Please input data of students NO.%d(ID,score,phone,name):\n",i+1);
+		printf("Please input data of student NO.%d(ID,score,phone,name):\n",i+1);
 		scanf("%d%d%ld%s",&stud[i].num,&stud[i].score,&stud[i].phone,stud[i].name);
 	}
 	save();
