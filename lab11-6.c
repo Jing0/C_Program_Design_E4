@@ -14,4 +14,35 @@
  * =====================================================================================
  */
 
-
+#include <stdio.h>
+#include <stdlib.h>
+#define random (rand()%500)
+#define NUM 100
+struct Market{
+	int num;
+	int sale[4];
+}mar[NUM];
+int main(){
+	FILE *fp;
+	if((fp=fopen("market.dat","w"))==NULL){
+		printf("cannot open file\n");
+		exit(0);
+	}
+	int i,j,sum[NUM]={0};
+	for(i=0;i<NUM;i++){
+		mar[i].num=random;
+		printf("Please input the sales data of market NO.%d:\n",i+1);
+		for(j=0;j<4;j++){
+			scanf("%d",&mar[i].sale[j]);
+			sum[i]+=mar[i].sale[j];
+		}
+	}
+	for(i=0;i<NUM;i++){
+		if(fwrite(&mar[i],sizeof(struct Market),1,fp)!=1)
+			printf("file write error\n");
+		printf("The year's sales of market NO.%d is %d\n",i+1,sum[i]);
+	}
+	fclose(fp);
+	system("pause");
+	return 0;
+}
