@@ -12,15 +12,15 @@ void count(char str[]){
 	char *p=str;
 	for(upper=lower=space=num=other=0;*p!='\0';p++)
 		if(*p>='0'&&*p<='9')
-			num+=1;
+			num++;
 		else if(*p>='A'&&*p<='Z')
-			upper+=1;
+			upper++;
 		else if(*p>='a'&&*p<='z')
-			lower+=1;
+			lower++;
 		else if(*p==32)
-			space+=1;
+			space++;
 		else
-			other+=1;
+			other++;
 	printf("Uppercase:%d\nUppercase:%d\nSpaces=%d\nNumbers=%d\nOther=%d\n",upper,lower,space,num,other);
 }
 
