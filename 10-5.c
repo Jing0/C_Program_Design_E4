@@ -25,7 +25,7 @@ void save(){
 }
 int main(){
 	int i,j;
-	float sum[3]={0};
+	float sum[SIZE]={0};
 	for(i=0;i<SIZE;i++){
 		printf("Please input ID and name of student NO.%d:",i+1);
 		scanf("%d%s",&stud[i].num,stud[i].name);
@@ -34,7 +34,7 @@ int main(){
 			scanf("%d",&stud[i].sub[j]);
 			sum[i]+=stud[i].sub[j];
 		}
-		stud[i].average=sum[i]/3;
+		stud[i].average=sum[i]/3.0;
 	}
 	save();
 	return 0;
