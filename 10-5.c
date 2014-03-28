@@ -19,7 +19,7 @@ void save(){
 				fclose(fp);
 				return;
 			}
-			printf("file read error\n");
+			printf("file write error\n");
 		}
 	fclose(fp);
 }
