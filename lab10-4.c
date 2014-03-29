@@ -16,52 +16,47 @@
 
 #include <stdio.h>
 #define M 2
-#define N 2
-struct Student{
-	char name[20];
-	int num;
-	char sex;
-	char job[10];
+union catagory{
+	char work[10];
 	int class;
 };
-struct Teacher{
+struct Person{
 	char name[20];
 	int num;
 	char sex;
-	char job[10];
-	char work[10];
-};
+	char job;
+	union catagory cata;
+}person[M];
 int main(){
-	struct Student stu[M];
-	struct Teacher tea[N];
 	int i;
 	for(i=0;i<M;i++){
-		printf("Please input the info of student number %d\n",i+1);
+		printf("Please input the info of person number %d:\n",i+1);
 		printf("name:");
-		scanf("%s",stu[i].name);
+		scanf("%s",person[i].name);
 		printf("num and sex:");
-		scanf("%d %c",&stu[i].num,&stu[i].sex);
-		printf("job:");
-		scanf("%s",stu[i].job);
-		printf("class:");
-		scanf("%d",&stu[i].class);
+		scanf("%d %c",&person[i].num,&person[i].sex);
+		getchar();
+		printf("job('s'for student,'t'for teacher):");
+		scanf("%c",&person[i].job);
+		if(person[i].job=='s'){
+			printf("class:");
+			scanf("%d",&person[i].cata.class);
+		}
+		else if(person[i].job=='t'){
+			printf("work:");
+			scanf("%s",person[i].cata.work);
+		}
+		else
+			printf("input error\n");
 	}
-	for(i=0;i<N;i++){
-		printf("Please input the info of teacher number %d\n",i+1);
-		printf("name:");
-		scanf("%s",tea[i].name);
-		printf("num and sex:");
-		scanf("%d %c",&tea[i].num,&tea[i].sex);
-		printf("job:");
-		scanf("%s",tea[i].job);
-		printf("work:");
-		scanf("%s",tea[i].work);
+	printf("\n");
+	printf("name  num  sex job  class/work \n");
+	for(i=0;i<M;i++){
+		printf("%-6s %d %c   %c    ",person[i].name,person[i].num,person[i].sex,person[i].job);
+		if(person[i].job=='s')
+			printf("%d\n",person[i].cata.class);
+		else
+			printf("%s\n",person[i].cata.work);
 	}
-	printf("Student\nname  num  sex job   class\n");
-	for(i=0;i<M;i++)
-		printf("%-6s %d %c %s %d\n",stu[i].name,stu[i].num,stu[i].sex,stu[i].job,stu[i].class);
-	printf("Teacher\nname  num  sex job   work\n");
-	for(i=0;i<N;i++)
-		printf("%-6s %d %c %s %s\n",tea[i].name,tea[i].num,tea[i].sex,tea[i].job,tea[i].work);
-	return 0;	
+	return 0;
 }
