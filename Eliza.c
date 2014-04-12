@@ -16,368 +16,286 @@
  */
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#define random(x) (rand()%x)
+
+/* generate random numbers from 0 to n-1 */
+int get_rand(int n){
+	int r=random(n);
+	return r;
+}
+/* 11 defalut response
+ * reponse when there is no key word in the user's scentence
+ * If you add more default response,please edit NumofDeResponse
+ */
+char *defalut_response[]={
+	"Sorry,I don't undersatnd.",
+	"What do you mean by saying that?",
+	"Can you elaborate on that?",
+	"I would appreciate it if you would continue.",
+	"Go on, don't be afraid.",
+	"I need a little more detail please.",
+	"You're being a bit brief, perhaps you could go into detail.",
+	"Can you are more explicit?",
+	"And?",
+	"Why did you say that?",
+	"Can you tell me more?",
+	"Continue.",
+	"Please Continue.",
+	"Do you want to talk about something else?",
+	"I am bored.",
+	"Let's talk about something new.",
+};
+void drespond(){
+	printf("%s\n",defalut_response[get_rand(16)]);
+}
+
+/* 脏话 */
+char *foullst[]={
+	"bitch",
+	"shit",
+	"bastard",
+	"damn",
+	"damned",
+	"hell",
+	"suck",
+	"sucking",
+	"ass",
+	"whore",
+	"asshole",
+	"fuck",
+	"fool",
+};
+char *foul_response[]={
+	"Please watch your tongue!",
+	"Please avoid such unwholesome thoughts!",
+	"Please get your mind out of the gutter.",
+	"Such lewdness is not appreciated.",
+};
+void foul(){
+	printf("%s\n",foul_response[get_rand(4)]);
+}
+
+/* 打招呼 */
+char *howdylst[]={
+	"howdy",
+	"hi", //This keyword doesn't work
+	"hello",
+};
+char *howdy_response[]={
+	"Hi there!",
+	"Hi!",
+	"Hello!",
+	"How do you do?",
+	"Howdy!",
+};
+void howdy(){
+	printf("%s\n",howdy_response[get_rand(5)]);
+}
+
+/* Eliza */
+char *elizalst[]={
+	"you",
+	"eliza",
+	"emacs",
+};
+char *eliza_response[]={
+	"I am the doctor.",
+	"I can do anything i damn please.",
+	"I could ask the same thing myself.",
+	"Allow me to do the questioning.",
+	"Try to answer that question yourself.",
+};
+void eliza(){
+	printf("%s\n",eliza_response[get_rand(5)]);
+}
+
+/* Jackie */
+char *jackielst[]={
+	"jackie",
+	"owner",
+	"create",
+};
+char *jackie_response[]={
+	"Do you know Jackie?",
+	"Jackie is very creative,you know.",
+	"If you want to know about Jackie,visit http://jackiekuo.com.",
+};
+void jackie(){
+	printf("%s\n",jackie_response[get_rand(3)]);
+}
+
+
+/* love */
+char *lovelst[]={
+	"loves",
+	"love",
+	"loved",
+	"loving",
+};
+char *love_response[]={
+	"With whom are you in love?",
+	"Do you really know about love?",
+	"Can you describe love?",
+	"Can you tell me about your feeling?",
+};
+void love(){
+	printf("%s\n",love_response[get_rand(4)]);
+}
+
+/* 心情 */
+char *moodlst[]={ 
+	"alone", 
+	"depressed",
+	"annoyed",
+	"upset",
+	"unhappy",
+	"excited ",
+	"worried",
+	"lonely",
+	"angry",
+	"mad",
+	"pissed",
+	"jealous",
+	"happy",
+	"bored",
+	"nervous",
+};
+char *mood_response[]={
+	"What cause you feel like that?",
+	"Are you feeling that often?",
+	"What causes you to be like that?",
+	"Tell me more..",
+};
+/* 加入更多元素，Smarter */
+void mood(int n){
+	if(get_rand(2)>0) //在这里修改两方权重
+		printf("%s\n",mood_response[get_rand(4)]);
+	else
+		printf("Why do you feel %s?\n",moodlst[n]);
+}
+ 
+/* school */
+char *schoollst[]={
+	"school",
+	"schools",
+	"grade",
+	"grades",
+	"teacher",
+	"teachers",
+	"class",
+	"classes",
+	"subject",
+	"professor",
+	"score",
+};
+char *school_response[]={
+	"Maybe this is related to your attitude.",
+	"Are you absent often?",
+	"Maybe you should study something.",
+	"Tell me more about it.",
+};
+void school(){
+	printf("%s\n",school_response[get_rand(4)]);
+}
+
+/* hate */
+char *hatelst[]={
+	"hates",
+	"hate",
+	"hated",
+	"dislikes",
+	"dislike",
+};
+char *hate_response[]={
+	"Maybe you should consult a doctor of medicine.",
+	"I am a psychiatrist,you know.",
+	"Please, go into more detail?",
+};
+void hate(){
+	printf("%s\n",hate_response[get_rand(3)]);
+}
+
+/* last thing: chat */
+char *chatlst[]={
+	"chat",
+};
+char *chat_response[]={
+	"Does our discussion bother you?",
+	"It is a pleasure to chat with you.^_^",
+	"Do you want to talk about something else?",
+};
+void chat(){
+	printf("%s\n",chat_response[get_rand(3)]);
+}
+ 
+/* 将输入转换为小写字母 */
+void convert2lower(char *str){
+	char *p=str;
+	for(;*p!='\0';p++)
+		if(*p>='A'&&*p<='Z')
+			*p+=32;
+}
+
+/* 是否存在单词 */
+int exist(char keyword[],char input[]){
+	//sign代表是否存在keyword，word_sign代表是否是独立的单词（必须为独立的单词才满足）
+	int i,j,sign;
+	char word[100];
+	for(i=0,sign=0;input[i]!='\0';i++){
+		for(j=0;input[i]!=' '&&input[i]!='\0';)
+			word[j++]=input[i++];
+		if(j!=0&&strcmp(keyword,word)==0){
+			sign=1;
+			break;
+		}
+	}
+	return sign;
+}
+
+/* 是否存在单词列表 */
+int existlst(char **lst,char input[]){
+	int sign;
+	char **p=lst;
+	for(sign=0;*p!='\0';p++)
+		if(exist(*p,input)){
+			sign=p-lst+1; //传递回去的为数组下标加1
+			break;
+		}
+	return sign;
+}
+
 int main(){
+	printf("\t\043\043\043 ELIZA \043\043\043\n");
+	printf("I am Eliza, the psychotherapist.\nPlease, describe your problems.\n");
+	printf("Each time you are finished talking, type RET.\n\n");
 	char input[100];
-	void eliza(char input[]);
-	printf("I am the psychotherapist.  Please, describe your problems.  Each time
-you are finished talking, type RET.");
-	for(;;){	
+	for(;;){
 		printf("> ");
-		scanf("%s",input);
-		eliza(input);
+		gets(input);
+		convert2lower(input);
+		putchar('\n');
+		if(existlst(foullst,input))
+			foul();
+	 	else if(existlst(howdylst,input))
+			howdy();
+		else if(existlst(elizalst,input))
+			eliza();
+		else if(existlst(jackielst,input))
+			jackie();
+		else if(existlst(moodlst,input))
+			mood(existlst(moodlst,input)-1);
+		else if(existlst(lovelst,input)!=-1)
+			love();
+		else if(existlst(schoollst,input))
+			school();
+		else if(existlst(hatelst,input))
+			hate();
+		else if(existlst(chatlst,input))
+			chat();
+		else
+			drespond();
+		putchar('\n');
 	}
 	return 0;
 }
-void eliza(char input[]){
-	//keyword map
-	int ifexist(char keyword[],char input[]);
-	ifexist(input,keyword){
-		random;
-		printf();
-
-	}
-}
-int ifexist(char keyword[],char input[]){
-	;
-	if(){
-		return 0;
-	}
-	else
-		return 0;
-}
-int random(int n){
-	;
-}
-
-/* abort aborted aborts ask asked asks am
-    applied applies apply are associate
-           associated ate
-           be became become becomes becoming
-           been being believe believed believes
-           bit bite bites bore bored bores boring bought buy buys buying
-           call called calling calls came can caught catch come
-           contract contracted contracts control controlled controls
-           could croak croaks croaked cut cuts
-           dare dared define defines dial dialed dials did die died dies
-           dislike disliked
-           dislikes do does drank drink drinks drinking
-           drive drives driving drove dying
-           eat eating eats expand expanded expands
-           expect expected expects expel expels expelled
-           explain explained explains
-           fart farts feel feels felt fight fights find finds finding
-           forget forgets forgot fought found
-           fuck fucked fucking fucks
-           gave get gets getting give gives go goes going gone got gotten
-           had harm harms has hate hated hates have having
-           hear heard hears hearing help helped helping helps
-           hit hits hope hoped hopes hurt hurts
-           implies imply is
-           join joined joins jump jumped jumps
-           keep keeping keeps kept
-           kill killed killing kills kiss kissed kisses kissing
-           knew know knows
-           laid lay lays let lets lie lied lies like liked likes
-           liking listen listens
-           login look looked looking looks
-           lose losing lost
-           love loved loves loving
-           luse lusing lust lusts
-           made make makes making may mean means meant might
-           move moved moves moving must
-           need needed needs
-           order ordered orders ought
-           paid pay pays pick picked picking picks
-           placed placing prefer prefers put puts
-           ran rape raped rapes
-           read reading reads recall receive received receives
-           refer refered referred refers
-           relate related relates remember remembered remembers
-           romp romped romps run running runs
-           said sang sat saw say says
-           screw screwed screwing screws scrod see sees seem seemed
-           seems seen sell selling sells
-           send sendind sends sent shall shoot shot should
-           sing sings sit sits sitting sold studied study
-           take takes taking talk talked talking talks tell tells telling
-           think thinks
-           thought told took tooled touch touched touches touching
-           transfer transferred transfers transmit transmits transmitted
-           type types types typing
-           walk walked walking walks want wanted wants was watch
-           watched watching went were will wish would work worked works
-           write writes writing wrote use used uses using)
-	   */
-
-/*
- * 
-(doctor-put-meaning howdy 'howdy)
-(doctor-put-meaning hi 'howdy)
-(doctor-put-meaning greetings 'howdy)
-(doctor-put-meaning hello 'howdy)
-(doctor-put-meaning tops20 'mach)
-(doctor-put-meaning tops-20 'mach)
-(doctor-put-meaning tops 'mach)
-(doctor-put-meaning pdp11 'mach)
-(doctor-put-meaning computer 'mach)
-(doctor-put-meaning unix 'mach)
-(doctor-put-meaning machine 'mach)
-(doctor-put-meaning computers 'mach)
-(doctor-put-meaning machines 'mach)
-(doctor-put-meaning pdp11s 'mach)
-(doctor-put-meaning foo 'mach)
-(doctor-put-meaning foobar 'mach)
-(doctor-put-meaning multics 'mach)
-(doctor-put-meaning macsyma 'mach)
-(doctor-put-meaning teletype 'mach)
-(doctor-put-meaning la36 'mach)
-(doctor-put-meaning vt52 'mach)
-(doctor-put-meaning zork 'mach)
-(doctor-put-meaning trek 'mach)
-(doctor-put-meaning startrek 'mach)
-(doctor-put-meaning advent 'mach)
-(doctor-put-meaning pdp 'mach)
-(doctor-put-meaning dec 'mach)
-(doctor-put-meaning commodore 'mach)
-(doctor-put-meaning vic 'mach)
-(doctor-put-meaning bbs 'mach)
-(doctor-put-meaning modem 'mach)
-(doctor-put-meaning baud 'mach)
-(doctor-put-meaning macintosh 'mach)
-(doctor-put-meaning vax 'mach)
-(doctor-put-meaning vms 'mach)
-(doctor-put-meaning ibm 'mach)
-(doctor-put-meaning pc 'mach)
-(doctor-put-meaning bitching 'foul)
-(doctor-put-meaning shit 'foul)
-(doctor-put-meaning bastard 'foul)
-(doctor-put-meaning damn 'foul)
-(doctor-put-meaning damned 'foul)
-(doctor-put-meaning hell 'foul)
-(doctor-put-meaning suck 'foul)
-(doctor-put-meaning sucking 'foul)
-(doctor-put-meaning sux 'foul)
-(doctor-put-meaning ass 'foul)
-(doctor-put-meaning whore 'foul)
-(doctor-put-meaning bitch 'foul)
-(doctor-put-meaning asshole 'foul)
-(doctor-put-meaning shrink 'foul)
-(doctor-put-meaning pot 'toke)
-(doctor-put-meaning grass 'toke)
-(doctor-put-meaning weed 'toke)
-(doctor-put-meaning marijuana 'toke)
-(doctor-put-meaning acapulco 'toke)
-(doctor-put-meaning columbian 'toke)
-(doctor-put-meaning tokin 'toke)
-(doctor-put-meaning joint 'toke)
-(doctor-put-meaning toke 'toke)
-(doctor-put-meaning toking 'toke)
-(doctor-put-meaning tokin\' 'toke)
-(doctor-put-meaning toked 'toke)
-(doctor-put-meaning roach 'toke)
-(doctor-put-meaning pills 'drug)
-(doctor-put-meaning dope 'drug)
-(doctor-put-meaning acid 'drug)
-(doctor-put-meaning lsd 'drug)
-(doctor-put-meaning speed 'drug)
-(doctor-put-meaning heroin 'drug)
-(doctor-put-meaning hash 'drug)
-(doctor-put-meaning cocaine 'drug)
-(doctor-put-meaning uppers 'drug)
-(doctor-put-meaning downers 'drug)
-(doctor-put-meaning loves 'loves)
-(doctor-put-meaning love 'love)
-(doctor-put-meaning loved 'love)
-(doctor-put-meaning hates 'hates)
-(doctor-put-meaning dislikes 'hates)
-(doctor-put-meaning hate 'hate)
-(doctor-put-meaning hated 'hate)
-(doctor-put-meaning dislike 'hate)
-(doctor-put-meaning stoned 'state)
-(doctor-put-meaning drunk 'state)
-(doctor-put-meaning drunken 'state)
-(doctor-put-meaning high 'state)
-(doctor-put-meaning horny 'state)
-(doctor-put-meaning blasted 'state)
-(doctor-put-meaning happy 'state)
-(doctor-put-meaning paranoid 'state)
-(doctor-put-meaning wish 'desire)
-(doctor-put-meaning wishes 'desire)
-(doctor-put-meaning want 'desire)
-(doctor-put-meaning desire 'desire)
-(doctor-put-meaning like 'desire)
-(doctor-put-meaning hope 'desire)
-(doctor-put-meaning hopes 'desire)
-(doctor-put-meaning desires 'desire)
-(doctor-put-meaning wants 'desire)
-(doctor-put-meaning desires 'desire)
-(doctor-put-meaning likes 'desire)
-(doctor-put-meaning needs 'desire)
-(doctor-put-meaning need 'desire)
-(doctor-put-meaning frustrated 'mood)
-(doctor-put-meaning depressed 'mood)
-(doctor-put-meaning annoyed 'mood)
-(doctor-put-meaning upset 'mood)
-(doctor-put-meaning unhappy 'mood)
-(doctor-put-meaning excited 'mood)
-(doctor-put-meaning worried 'mood)
-(doctor-put-meaning lonely 'mood)
-(doctor-put-meaning angry 'mood)
-(doctor-put-meaning mad 'mood)
-(doctor-put-meaning pissed 'mood)
-(doctor-put-meaning jealous 'mood)
-(doctor-put-meaning afraid 'fear)
-(doctor-put-meaning terrified 'fear)
-(doctor-put-meaning fear 'fear)
-(doctor-put-meaning scared 'fear)
-(doctor-put-meaning frightened 'fear)
-(doctor-put-meaning virginity 'sexnoun)
-(doctor-put-meaning virgins 'sexnoun)
-(doctor-put-meaning virgin 'sexnoun)
-(doctor-put-meaning cock 'sexnoun)
-(doctor-put-meaning cocks 'sexnoun)
-(doctor-put-meaning dick 'sexnoun)
-(doctor-put-meaning dicks 'sexnoun)
-(doctor-put-meaning cunt 'sexnoun)
-(doctor-put-meaning cunts 'sexnoun)
-(doctor-put-meaning prostitute 'sexnoun)
-(doctor-put-meaning condom 'sexnoun)
-(doctor-put-meaning sex 'sexnoun)
-(doctor-put-meaning rapes 'sexnoun)
-(doctor-put-meaning wife 'family)
-(doctor-put-meaning family 'family)
-(doctor-put-meaning brothers 'family)
-(doctor-put-meaning sisters 'family)
-(doctor-put-meaning parent 'family)
-(doctor-put-meaning parents 'family)
-(doctor-put-meaning brother 'family)
-(doctor-put-meaning sister 'family)
-(doctor-put-meaning father 'family)
-(doctor-put-meaning mother 'family)
-(doctor-put-meaning husband 'family)
-(doctor-put-meaning siblings 'family)
-(doctor-put-meaning grandmother 'family)
-(doctor-put-meaning grandfather 'family)
-(doctor-put-meaning maternal 'family)
-(doctor-put-meaning paternal 'family)
-(doctor-put-meaning stab 'death)
-(doctor-put-meaning murder 'death)
-(doctor-put-meaning murders 'death)
-(doctor-put-meaning suicide 'death)
-(doctor-put-meaning suicides 'death)
-(doctor-put-meaning kill 'death)
-(doctor-put-meaning kills 'death)
-(doctor-put-meaning killing 'death)
-(doctor-put-meaning die 'death)
-(doctor-put-meaning dies 'death)
-(doctor-put-meaning died 'death)
-(doctor-put-meaning dead 'death)
-(doctor-put-meaning death 'death)
-(doctor-put-meaning deaths 'death)
-(doctor-put-meaning pain 'symptoms)
-(doctor-put-meaning ache 'symptoms)
-(doctor-put-meaning fever 'symptoms)
-(doctor-put-meaning sore 'symptoms)
-(doctor-put-meaning aching 'symptoms)
-(doctor-put-meaning stomachache 'symptoms)
-(doctor-put-meaning headache 'symptoms)
-(doctor-put-meaning hurts 'symptoms)
-(doctor-put-meaning disease 'symptoms)
-(doctor-put-meaning virus 'symptoms)
-(doctor-put-meaning vomit 'symptoms)
-(doctor-put-meaning vomiting 'symptoms)
-(doctor-put-meaning barf 'symptoms)
-(doctor-put-meaning toothache 'symptoms)
-(doctor-put-meaning hurt 'symptoms)
-(doctor-put-meaning rum 'alcohol)
-(doctor-put-meaning gin 'alcohol)
-(doctor-put-meaning vodka 'alcohol)
-(doctor-put-meaning alcohol 'alcohol)
-(doctor-put-meaning bourbon 'alcohol)
-(doctor-put-meaning beer 'alcohol)
-(doctor-put-meaning wine 'alcohol)
-(doctor-put-meaning whiskey 'alcohol)
-(doctor-put-meaning scotch 'alcohol)
-(doctor-put-meaning fuck 'sexverb)
-(doctor-put-meaning fucked 'sexverb)
-(doctor-put-meaning screw 'sexverb)
-(doctor-put-meaning screwing 'sexverb)
-(doctor-put-meaning fucking 'sexverb)
-(doctor-put-meaning rape 'sexverb)
-(doctor-put-meaning raped 'sexverb)
-(doctor-put-meaning kiss 'sexverb)
-(doctor-put-meaning kissing 'sexverb)
-(doctor-put-meaning kisses 'sexverb)
-(doctor-put-meaning screws 'sexverb)
-(doctor-put-meaning fucks 'sexverb)
-(doctor-put-meaning because 'conj)
-(doctor-put-meaning but 'conj)
-(doctor-put-meaning however 'conj)
-(doctor-put-meaning besides 'conj)
-(doctor-put-meaning anyway 'conj)
-(doctor-put-meaning that 'conj)
-(doctor-put-meaning except 'conj)
-(doctor-put-meaning why 'conj)
-(doctor-put-meaning how 'conj)
-(doctor-put-meaning until 'when)
-(doctor-put-meaning when 'when)
-(doctor-put-meaning whenever 'when)
-(doctor-put-meaning while 'when)
-(doctor-put-meaning since 'when)
-(doctor-put-meaning rms 'rms)
-(doctor-put-meaning stallman 'rms)
-(doctor-put-meaning school 'school)
-(doctor-put-meaning schools 'school)
-(doctor-put-meaning skool 'school)
-(doctor-put-meaning grade 'school)
-(doctor-put-meaning grades 'school)
-(doctor-put-meaning teacher 'school)
-(doctor-put-meaning teachers 'school)
-(doctor-put-meaning classes 'school)
-(doctor-put-meaning professor 'school)
-(doctor-put-meaning prof 'school)
-(doctor-put-meaning profs 'school)
-(doctor-put-meaning professors 'school)
-(doctor-put-meaning mit 'school)
-(doctor-put-meaning emacs 'eliza)
-(doctor-put-meaning eliza 'eliza)
-(doctor-put-meaning liza 'eliza)
-(doctor-put-meaning elisa 'eliza)
-(doctor-put-meaning weizenbaum 'eliza)
-(doctor-put-meaning doktor 'eliza)
-(doctor-put-meaning athletics 'sports)
-(doctor-put-meaning baseball 'sports)
-(doctor-put-meaning basketball 'sports)
-(doctor-put-meaning football 'sports)
-(doctor-put-meaning frisbee 'sports)
-(doctor-put-meaning gym 'sports)
-(doctor-put-meaning gymnastics 'sports)
-(doctor-put-meaning hockey 'sports)
-(doctor-put-meaning lacrosse 'sports)
-(doctor-put-meaning soccer 'sports)
-(doctor-put-meaning softball 'sports)
-(doctor-put-meaning sports 'sports)
-(doctor-put-meaning swimming 'sports)
-(doctor-put-meaning swim 'sports)
-(doctor-put-meaning tennis 'sports)
-(doctor-put-meaning volleyball 'sports)
-(doctor-put-meaning math 'math)
-(doctor-put-meaning mathematics 'math)
-(doctor-put-meaning mathematical 'math)
-(doctor-put-meaning theorem 'math)
-(doctor-put-meaning axiom 'math)
-(doctor-put-meaning lemma 'math)
-(doctor-put-meaning algebra 'math)
-(doctor-put-meaning algebraic 'math)
-(doctor-put-meaning trig 'math)
-(doctor-put-meaning trigonometry 'math)
-(doctor-put-meaning trigonometric 'math)
-(doctor-put-meaning geometry 'math)
-(doctor-put-meaning geometric 'math)
-(doctor-put-meaning calculus 'math)
-(doctor-put-meaning arithmetic 'math)
-(doctor-put-meaning zippy 'zippy)
-(doctor-put-meaning zippy 'zippy)
-(doctor-put-meaning pinhead 'zippy)
-(doctor-put-meaning chat 'chat)
-*/
