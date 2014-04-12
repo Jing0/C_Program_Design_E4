@@ -253,7 +253,7 @@ int exist(char keyword[],char input[]){
 	return sign;
 }
 
-/* 是否存在单词列表 */
+/* 是否存在于单词列表 */
 int existlst(char **lst,char input[]){
 	int sign;
 	char **p=lst;
@@ -285,7 +285,7 @@ int main(){
 			jackie();
 		else if(existlst(moodlst,input))
 			mood(existlst(moodlst,input)-1);
-		else if(existlst(lovelst,input)!=-1)
+		else if(existlst(lovelst,input))
 			love();
 		else if(existlst(schoollst,input))
 			school();
